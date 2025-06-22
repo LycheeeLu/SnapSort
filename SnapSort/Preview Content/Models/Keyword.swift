@@ -16,10 +16,10 @@ class Keyword{
     var id: UUID
     var name: String
     var keywords: [String]
-    var color: String
+    var color: ThemeColor
     var createdDate: Date
     
-    init(name: String, keywords: [String], color: String = "pink" ) {
+    init(name: String, keywords: [String], color: ThemeColor = .pink ) {
         self.id = UUID()
         self.name = name
         self.keywords = keywords
