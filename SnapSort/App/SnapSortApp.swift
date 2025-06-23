@@ -10,7 +10,8 @@ import SwiftData
 
 @main
 struct SnapSortApp: App {
-    var sharedModelContainer: ModelContainer = {
+    //database container of SwiftData
+    /* var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Item.self,
         ])
@@ -21,8 +22,7 @@ struct SnapSortApp: App {
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-    }()
-
+    }() */
     //seems like sharedModelContainer is useless for now
     
     var body: some Scene {
