@@ -11,7 +11,7 @@ import Foundation
 
 
 @Model
-class Keyword{
+class Theme{
     
     var id: UUID
     var name: String

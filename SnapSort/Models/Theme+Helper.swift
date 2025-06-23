@@ -9,7 +9,7 @@
 import SwiftUI
 
 // Helper method to check if snap text contains any keywords
-extension Keyword{
+extension Theme{
     func matches(text: String) -> Bool {
         let lowercasedText = text.lowercased()
         return keywords.contains{
