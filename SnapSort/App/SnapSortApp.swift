@@ -23,10 +23,12 @@ struct SnapSortApp: App {
         }
     }()
 
+    //seems like sharedModelContainer is useless for now
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
-        .modelContainer(sharedModelContainer)
+        .modelContainer(for: [Theme.self, ClassifiedScreenShot.self])
     }
 }

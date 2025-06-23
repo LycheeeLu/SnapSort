@@ -82,10 +82,17 @@ class ClassificationService{
         var maxPossibleScore = 0
         
         for themeName in themes {
+            if let theme = allThemes.first(where: { $0.name == themeName}){
+                totalScore += calculateThemeScore(text: cleanText, theme: theme)
+                maxPossibleScore += theme.keywords.count * 3
+                // max possible score per theme
+            }
             
         }
         
-        return maxPossibleScore > 0? min() / : 0.0
+        
+        return maxPossibleScore > 0 ? min(Double(totalScore) / Double(maxPossibleScore), 1.0) : 0.0
+
         
     }
     
@@ -93,7 +100,7 @@ class ClassificationService{
     
     //default topics for new users
     //will do more complex matching (like per-word tokenization or machine learning) later
-    static func createDefaultKeywords() -> [Theme]{
+    static func createDefaultThemes() -> [Theme]{
         return [
             Theme(
                 name: "code",
@@ -118,7 +125,7 @@ class ClassificationService{
             
             Theme(
                 name: "food",
-                keywords: ["food", "takeout", "cook", "meal", "yummy", "restaurant", "sushi"]
+                keywords: ["food", "takeout", "cook", "meal", "yummy", "restaurant", "sushi"],
                 color: ThemeColor.orange
             )
             
