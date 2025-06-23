@@ -97,28 +97,29 @@ class ClassificationService{
         return [
             Theme(
                 name: "code",
-                keywords: ["code", "programming", "swift", "python", "javascript", "git", "function", "class", "variable", "debug", "api", "database", "algorithm", "bug", "commit", "java", "repo", "project"],
+                keywords: ["code", "programming", "swift", "python", "javascript", "git", "function", "class", "variable", "debug", "api", "database", "algorithm", "bug", "java", "repo", "project"],
                 color: ThemeColor.blue
                 
             ),
             
             Theme(
                 name: "shopping",
-                keywords: ["price", "buy", "cosmetics", "order", "shipping", "pay", "discount", "sale", "product", "purchase", "checkout", "makeup", "refund", "$", "yen", "coupon"],
+                keywords: ["price", "buy", "cosmetics", "order", "shipping", "pay", "discount", "sale", "brand", "purchase", "makeup", "refund", "$", "yen", "coupon"],
                 color: ThemeColor.pink
                 
             ),
             
             Theme(
                 name: "transport",
-                keywords: ["flight", "hotel", "booking", "vacation", "trip", "passport", "ticket", "tram", "airport", "boarding", "luggage", "reservation"],
+                keywords: ["flight", "hotel", "booking", "trip", "passport", "ticket", "tram", "airport", "boarding", "luggage", "bus", "line"],
                 color:  ThemeColor.green
                 
             ),
             
             Theme(
                 name: "food",
-                keywords: ["food", "takeout", "cook", "meal",]
+                keywords: ["food", "takeout", "cook", "meal", "yummy", "restaurant", "sushi"]
+                color: ThemeColor.orange
             )
             
             
