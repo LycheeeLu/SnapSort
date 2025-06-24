@@ -15,7 +15,7 @@ struct ContentView: View {
     //automatically search for and update instances of theme and ClassifiedScreenshot
     @Query private var theme: [Theme]
     @Query private var classifiedScreenshots: [ClassifiedScreenShot]
-
+    
     //load services for processing photos and OCR
     // services lifetime: stay the same during contentView
     @StateObject private var photoService = PhotoService()
@@ -23,7 +23,7 @@ struct ContentView: View {
     
     //record current selected Tab
     @State private var selectedTab = 0
-
+    
     
     var body: some View {
         
@@ -53,28 +53,41 @@ struct ContentView: View {
                 }
                 .tag(2)
         }
-        
-        
-        
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
+        .environmentObject(photoService)
+        .environmentObject(textService)
+        .onAppear{
+            setupDefaultThemes()
         }
+        // inject photoService and textService into the envirotnment object
+        // available at @EnvironmentObject
+        
     }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
+    
+    //for first initialization
+    // if there is no default Themes in database
+    private func setupDefaultThemes() {
+        guard theme.isEmpty else  {return}
+        
+        let defaultThemes = ClassificationService.createDefaultThemes()
+        for theme in defaultThemes {
+            modelContext.insert(theme)
         }
+        
+        
+        //saving context
+        do {
+            try modelContext.save()
+            print("Default themes created successfully")
+            
+        } catch {
+            print("Failed to save default themes")
+            print("error: \(error)")
+            
+        }
+        
+        
+        
     }
-}
-
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+    
+    
 }
