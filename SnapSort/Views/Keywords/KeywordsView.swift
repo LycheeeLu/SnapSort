@@ -12,3 +12,9 @@ struct KeywordsView : View {
         /*@START_MENU_TOKEN@*//*@PLACEHOLDER=Hello, world!@*/Text("Hello, world!")/*@END_MENU_TOKEN@*/
     }
 }
+
+
+#Preview {
+    KeywordsView()
+        .modelContainer(for: Item.self, inMemory: true)
+}
