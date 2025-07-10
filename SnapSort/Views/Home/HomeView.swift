@@ -91,9 +91,9 @@ struct HomeView: View{
             VStack(spacing: 16){
                 Image(systemName: "photo.on.rectangle")
                     .font(.system(size: 60))
-                    .foregroundStyle(.gray)
+                    .foregroundStyle(.cyan)
                 
-                Text("Photo Access Required to find and classify screenshots")
+                Text("Photo Access Required")
                     .font(.title2)
                     .fontWeight(.semibold)
                     .multilineTextAlignment(.center)
@@ -106,7 +106,7 @@ struct HomeView: View{
             }){
                 HStack{
                     Image(systemName: "lock.open.fill")
-                    Text("Allow Photo Access")
+                    Text("Allow")
                 }
                 .font(.headline)
                 .foregroundColor(.white)
@@ -132,6 +132,8 @@ struct HomeView: View{
             }
         }
         .padding()
+        .background(Color(.systemGray6))
+        .cornerRadius(16)
         
     }
     
@@ -155,6 +157,17 @@ struct HomeView: View{
             ProgressView(value: processingProgress)
                 .progressViewStyle(LinearProgressViewStyle(tint: .blue))
             
+            HStack {
+                Text("\(currentProcessingIndex) of \(totalScreenshots)")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                
+                Spacer()
+                
+                Text("\(Int(processingProgress * 100))%")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
             
             
         }
@@ -172,6 +185,7 @@ struct HomeView: View{
                 Text("Classify screenshots")
             }
             .font(.headline)
+            
             
         }
         .disabled(themeWords.isEmpty)
@@ -319,11 +333,24 @@ struct HomeView: View{
 
 
 #Preview("Only HomeView") {
+    let mockService = MockPhotoService() as PhotoService
     HomeView()
-        .environmentObject(PhotoService())
+        .environmentObject(mockService)
         .environmentObject(MockTextRecognitionService())
 }
 
 class MockTextRecognitionService: TextRecogService {
     // 
+}
+
+class MockPhotoService: PhotoService {
+    override init() {
+        super.init()
+        self.authorizationStatus = .authorized
+    }
+
+    override func requestPermission() {
+        print("🔵 Mock: Pretending permission is granted.")
+        self.authorizationStatus = .authorized
+    }
 }

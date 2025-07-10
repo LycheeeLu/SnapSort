@@ -27,8 +27,10 @@ class PhotoService: ObservableObject{
     
     //ask the user for library access and hide/show screenshots if denied
     func requestPermission(){
+        print("🔵 Asking for permission...")
         PHPhotoLibrary.requestAuthorization(for: .readWrite){ status in
             DispatchQueue.main.async {
+                print("🟢 Permission result: \(status.rawValue)")
                 self.authorizationStatus = status
             }
             
