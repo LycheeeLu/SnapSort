@@ -10,15 +10,21 @@ import SwiftData
 import Photos
 
 struct HomeView: View{
-    
+    @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var photoService: PhotoService
-    @Query private var themeKeywords: [Theme]
+    @EnvironmentObject var textService: TextRecogService
+    
+    @Query private var themeWords: [Theme]
+    @Query private var classifiedScreenshots: [ClassifiedScreenShot]
     
     @State private var showingAlert = false
     @State private var alertMessage = ""
-    @State private var isProcessing = false
     
-    @state private var processingProgress = 0.0
+    @State private var isProcessing = false
+    @State private var processingProgress = 0.0
+    @State private var currentProcessingIndex = 0
+    @State private var totalScreenshots = 0
+    
     
     var body: some View {
         NavigationView{
@@ -158,8 +164,145 @@ struct HomeView: View{
             .font(.headline)
             
         }
-        .disabled(themeKeywords.isEmpty)
+        .disabled(themeWords.isEmpty)
         
+    }
+    
+    // MARK: - Quick Actions
+    private var quickActionsSection: some View{
+        VStack(){
+            Text("Quick Actions")
+                .font(.headline)
+            
+            LazyVGrid(
+                columns: Array(repeating: GridItem(.flexible()), count:2),
+                spacing: 12
+            ){
+                QuickActionCard(
+                    title: "View Gallery",
+                    icon: "photo.on.rectangle.angled",
+                    color: .blue
+                    
+                ){
+                    // Switch to gallery tab
+                }
+                
+                
+                QuickActionCard(
+                    title: "View keywords",
+                    icon: "tag.fill",
+                    color: .indigo
+                ){
+                    // Switch to keywords tab
+                }
+                
+                
+                //might neeed more quick actions
+            }
+            
+        }
+    }
+    
+    // MARK: - Quick Action Card
+    struct QuickActionCard: View{
+        let title: String
+        let icon: String
+        let color: Color
+        let action: () -> Void
+        
+        var body: some View{
+            Button(action: action){
+                VStack(){
+                    Image(systemName: icon)
+                        .foregroundColor(color)
+                    
+                    Text(title)
+                        .font(.caption)
+                        .multilineTextAlignment(.center)
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+            }
+            .buttonStyle(PlainButtonStyle())
+        }
+    }
+
+    
+    // MARK: - FUNCTIONS
+    private func processScreenshots() async {
+        guard !themeWords.isEmpty else {
+            alertMessage = "Please add themes first"
+            showingAlert = true
+            return
+        }
+        isProcessing = true
+        processingProgress = 0.0
+        
+        let screenshots = photoService.fetchScreenshots()
+        totalScreenshots = screenshots.count
+        currentProcessingIndex = 0
+        
+        guard !screenshots.isEmpty else{
+            alertMessage = "No screenshots found in the photo library"
+            showingAlert = true
+            isProcessing = false
+            return
+        }
+        
+        var processedCount = 0
+        var newClassfications = 0
+        
+        for(index, asset) in screenshots.enumerated(){
+            //Check if already processed
+            // using trailing closure to spot the first instance
+            // of screenshot that has been classified
+            let existingScreenshot = classifiedScreenshots.first{
+                $0.assetIdentifier == asset.localIdentifier
+            }
+            
+            if existingScreenshot == nil{
+                await processScreenshot(asset)
+                newClassfications += 1
+            }
+            
+            processedCount += 1
+            currentProcessingIndex = processedCount
+            processingProgress = Double(processedCount) / Double(totalScreenshots)
+            
+        }
+        isProcessing = false
+        alertMessage = "Processing complete! \(newClassfications) new screenshots classified."
+        showingAlert = true
+ 
+    }
+    
+    private func processScreenshot(_ asset: PHAsset) async{
+        guard let image = await photoService.loadImage(for: asset) else {
+            print("failed to load image for asset: \(asset.localIdentifier)")
+            return
+        }
+        
+        let extractedText = await textService.extractText(from: image)
+        let themes = ClassificationService.classifyText(extractedText, with: Array(themeWords))
+        let condifence = ClassificationService.getConfidence(for: extractedText, themes: themes, allThemes: Array(themeWords))
+        
+        let screenshot = ClassifiedScreenShot(
+            assetIdentifier: asset.localIdentifier, extractedText: extractedText, themes: themes, confidence: condifence)
+        
+        modelContext.insert(screenshot)
+        
+        //save periodically to avoid memory issues
+        // use ? so that if fails, the code doesnt crash
+        if classifiedScreenshots.count % 10 == 0 {
+            try? modelContext.save()
+        }
+        
+    }
+    
+    
+    private func refreshData() async {
+        photoService.objectWillChange.send()
+        //change the UI when data changed
     }
     
 }

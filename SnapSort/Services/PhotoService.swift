@@ -12,6 +12,8 @@ import UIKit
 @MainActor //ensure UI-related updates on the main
 class PhotoService: ObservableObject{
     //ObservableObject: bind this service to SwiftUI views
+    // when the class conforms to ObservableObject, it can be subscribed to
+    // and ObserbableObject updates SwiftUI’s view when data changes.
     
     @Published var authorizationStatus: PHAuthorizationStatus = .notDetermined
     @Published var isLoading = false
