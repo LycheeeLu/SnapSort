@@ -14,7 +14,9 @@ struct HomeView: View{
     @EnvironmentObject var photoService: PhotoService
     @EnvironmentObject var textService: TextRecogService
     
-    @Query private var themeWords: [Theme]
+    // for testing, use State
+    //@State private var themeWords: [Theme] = []
+    @Query private var themeWords: [Theme] = []
     @Query private var classifiedScreenshots: [ClassifiedScreenShot]
     
     @State private var showingAlert = false
@@ -39,22 +41,28 @@ struct HomeView: View{
                     if photoService.authorizationStatus != .authorized {
                         permissionSection
                     } else {
-                        processingSection
-                        
                         //Stats Section
                         
                         quickActionsSection
+                        
+                        processingSection
                     }
                     Spacer(minLength: 100)
                 }
                 .padding()
             }
-            .navigationTitle("Screenshot Classifier")
+            .navigationTitle("SnapSort")
+            //for testing only
+            /*.onAppear {
+                if themeWords.isEmpty {
+                    themeWords = ClassificationService.createDefaultThemes()
+                }
+            }*/
             .navigationBarTitleDisplayMode(.large)
             .refreshable {
                 await refreshData()
             }
-            .alert("Processing Complete", isPresented: $showingAlert) {
+            .alert("Process info", isPresented: $showingAlert) {
                 Button("OK"){ }
                 } message: {
                     Text(alertMessage)
@@ -138,7 +146,6 @@ struct HomeView: View{
     }
     
     
-    
     fileprivate var processingView: some View{
         VStack(spacing: 16){
             HStack{
@@ -185,16 +192,24 @@ struct HomeView: View{
                 Text("Classify screenshots")
             }
             .font(.headline)
-            
-            
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity)
+            .padding()
+            .background(
+                LinearGradient(
+                    colors: [.blue, .purple],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .cornerRadius(12)
         }
-        .disabled(themeWords.isEmpty)
         
     }
     
     // MARK: - Quick Actions
     private var quickActionsSection: some View{
-        VStack(){
+        VStack(alignment: .leading, spacing: 12){
             Text("Quick Actions")
                 .font(.headline)
             
@@ -213,11 +228,19 @@ struct HomeView: View{
                 
                 
                 QuickActionCard(
-                    title: "View keywords",
+                    title: "Edit Topics",
                     icon: "tag.fill",
                     color: .indigo
                 ){
                     // Switch to keywords tab
+                }
+                
+                QuickActionCard(
+                    title: "Export data",
+                    icon: "square.and.arrow.up",
+                    color: .purple
+                ){
+                    // export functionality
                 }
                 
                 
@@ -255,7 +278,7 @@ struct HomeView: View{
     // MARK: - FUNCTIONS
     private func processScreenshots() async {
         guard !themeWords.isEmpty else {
-            alertMessage = "Please add themes first"
+            alertMessage = "Uh-oh, Please add topics first"
             showingAlert = true
             return
         }
@@ -295,7 +318,7 @@ struct HomeView: View{
             
         }
         isProcessing = false
-        alertMessage = "Processing complete! \(newClassfications) new screenshots classified."
+        alertMessage = "\(newClassfications) new screenshots classified."
         showingAlert = true
  
     }
@@ -336,7 +359,7 @@ struct HomeView: View{
     let mockService = MockPhotoService() as PhotoService
     HomeView()
         .environmentObject(mockService)
-        .environmentObject(MockTextRecognitionService())
+        .environmentObject(TextRecogService())
 }
 
 class MockTextRecognitionService: TextRecogService {
