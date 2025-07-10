@@ -9,6 +9,9 @@ import SwiftUI
 import SwiftData
 
 struct GalleryView: View {
+    var body: some View {
+            Text("Gallery goes here")
+        }
     
     
 }

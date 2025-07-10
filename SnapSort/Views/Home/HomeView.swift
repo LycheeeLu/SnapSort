@@ -33,9 +33,19 @@ struct HomeView: View{
                     spacing: 24
                 ){
                     // Header Section
+                    headerSection
                     
                     // Permission Section
-                    
+                    if photoService.authorizationStatus != .authorized {
+                        permissionSection
+                    } else {
+                        processingSection
+                        
+                        //Stats Section
+                        
+                        quickActionsSection
+                    }
+                    Spacer(minLength: 100)
                 }
                 .padding()
             }
@@ -252,7 +262,7 @@ struct HomeView: View{
         var processedCount = 0
         var newClassfications = 0
         
-        for(index, asset) in screenshots.enumerated(){
+        for(_, asset) in screenshots.enumerated(){
             //Check if already processed
             // using trailing closure to spot the first instance
             // of screenshot that has been classified
@@ -308,3 +318,12 @@ struct HomeView: View{
 }
 
 
+#Preview("Only HomeView") {
+    HomeView()
+        .environmentObject(PhotoService())
+        .environmentObject(MockTextRecognitionService())
+}
+
+class MockTextRecognitionService: TextRecogService {
+    // 
+}

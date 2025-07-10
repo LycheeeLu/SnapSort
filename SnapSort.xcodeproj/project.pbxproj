@@ -101,7 +101,6 @@
 			buildPhases = (
 				DCAEC9592E0830F70090EF53 /* Sources */,
 				DCAEC95A2E0830F70090EF53 /* Frameworks */,
-				DCAEC95B2E0830F70090EF53 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -208,13 +207,6 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		DCAEC95B2E0830F70090EF53 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DCAEC96D2E0830F90090EF53 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
