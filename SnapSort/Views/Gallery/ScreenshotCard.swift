@@ -162,6 +162,9 @@ struct ThemeChip: View{
     
     var body: some View{
         Text(theme)
+            .lineLimit(1)
+            .truncationMode(.tail)
+            .fixedSize(horizontal: true, vertical: false)
             .font(.caption2)
             .fontWeight(.bold)
             .foregroundColor(.white)
@@ -171,6 +174,7 @@ struct ThemeChip: View{
                 Capsule()
                 .fill(themeColor)
             )
+        
     }
     
 }
