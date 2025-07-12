@@ -18,7 +18,7 @@ struct ScreenshotCard: View{
     
     
     var body: some View{
-        VStack(){
+        VStack(alignment: .leading, spacing: 0){
             //Image Sectiomn
             imageSection
             
@@ -105,7 +105,7 @@ struct ScreenshotCard: View{
     
     // MARK: - Content Section
     private var contentSection: some View{
-        VStack(){
+        VStack(alignment: .leading, spacing: 8){
             //Themes
             if screenshot.hasThemes && screenshot.themes != ["Uncategorized"] {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 4) {
@@ -157,13 +157,13 @@ struct ThemeChip: View{
             return themeWord.color.swiftUIColor
         }
         
-        return .purple
+        return .blue
     }
     
     var body: some View{
         Text(theme)
             .font(.caption2)
-            .fontWeight(.medium)
+            .fontWeight(.bold)
             .foregroundColor(.white)
             .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -172,6 +172,7 @@ struct ThemeChip: View{
                                 .fill(themeColor)
                         )
     }
+    
 }
 
 
@@ -187,7 +188,7 @@ struct ScreenshotDetailView: View{
     var body: some View{
         NavigationView{
             ScrollView{
-                VStack(){
+                VStack(alignment: .leading, spacing: 20){
                     // Image dispay
                     if let image = image {
                         Image(uiImage: image)
@@ -197,12 +198,12 @@ struct ScreenshotDetailView: View{
                         
                         }
                     //themes section
-                    VStack(){
+                    VStack(alignment: .leading, spacing: 12){
                         Text("Themes")
                             .font(.headline)
                         
                         LazyVGrid(
-                            columns: Array(repeating: GridItem(.flexible()), count: 3)
+                            columns: Array(repeating: GridItem(.flexible()), count: 3),spacing: 8
                         ){
                             ForEach(screenshot.themes, id: \.self){
                                 theme in ThemeChip(theme: theme)
@@ -214,7 +215,7 @@ struct ScreenshotDetailView: View{
                     
                     
                     //extracted text section
-                    VStack(){
+                    VStack(alignment: .leading, spacing: 12){
                         Text("Extracted text")
                             .font(.headline)
                         
@@ -235,7 +236,7 @@ struct ScreenshotDetailView: View{
                     }
                     
                     //ensure empty space in the bottom
-                    Spacer(minLength: 60)
+                    Spacer(minLength: 50)
                     
                     
                 }
@@ -257,19 +258,35 @@ struct ScreenshotDetailView: View{
 #if DEBUG
 struct ScreenshotCard_Previews: PreviewProvider {
     static var previews: some View {
-        ScreenshotCard(screenshot: mockScreenshot)
-            .environmentObject(MockPhotoService())
-            .previewLayout(.sizeThatFits)
-            .padding()
+        
+        VStack{
+            ForEach(mockScreenshots, id: \.assetIdentifier){
+                screenshot in
+                ScreenshotCard(screenshot: screenshot)
+                    .environmentObject(MockPhotoService())
+                    .previewLayout(.sizeThatFits)
+                    .padding()
+            }
+        }
+
     }
 
-    static var mockScreenshot: ClassifiedScreenShot {
-        return ClassifiedScreenShot(
-            assetIdentifier: "mock_id",
+    static var mockScreenshots: [ClassifiedScreenShot] {
+        return [
+            ClassifiedScreenShot(
+            assetIdentifier: "mock_1",
             extractedText: "This is a sample screenshot that mentions Swift, Git, and APIs.",
             themes: ["code", "work"],
             confidence: 0.85
-        )
+        ),
+            ClassifiedScreenShot(
+                assetIdentifier: "mock_2",
+                extractedText: "This is a sample screenshot that mentions japan, tokyo, and travel.",
+                themes: ["travel"],
+                confidence: 0.77
+            )
+        
+        ]
     }
 
     class MockPhotoService: PhotoService {
