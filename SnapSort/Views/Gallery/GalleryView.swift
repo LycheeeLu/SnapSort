@@ -77,7 +77,7 @@ struct GalleryView: View {
                                         HStack(spacing: 4) {
                                             ForEach(groupedScreenshots [theme] ?? [], id: \.id){
                                                 screenshot in ScreenshotCard(screenshot: screenshot)
-                                                    .frame(width: 80)
+                                                    .frame(width: 120)
                                             }
                                         }
                                         .padding(.horizontal)

@@ -14,7 +14,7 @@ struct ScreenshotCard: View{
     @EnvironmentObject var photoService: PhotoService
     @State private var image: UIImage?
     @State private var isLoading = true
-    @State private var showingDetail = true
+    @State private var showingDetail = false
     
     
     var body: some View{
@@ -109,7 +109,7 @@ struct ScreenshotCard: View{
             //Themes
             if screenshot.hasThemes && screenshot.themes != ["Uncategorized"] {
                 LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 2), spacing: 4) {
-                    ForEach(screenshot.themes.prefix(4), id: \.self){
+                    ForEach(screenshot.themes.prefix(1), id: \.self){
                         theme in ThemeChip(theme: theme)
                     }
                 }
@@ -166,11 +166,11 @@ struct ThemeChip: View{
             .fontWeight(.bold)
             .foregroundColor(.white)
             .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(
-                            Capsule()
-                                .fill(themeColor)
-                        )
+            .padding(.vertical, 4)
+            .background(
+                Capsule()
+                .fill(themeColor)
+            )
     }
     
 }
