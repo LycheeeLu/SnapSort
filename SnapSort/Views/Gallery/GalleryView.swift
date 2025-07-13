@@ -41,7 +41,7 @@ struct GalleryView: View {
                                 .font(.caption)
                                 .padding(.horizontal, 12)
                                 .padding(.vertical, 6)
-                                .background(selectedTheme == nil ? Color.blue : Color.gray.opacity(0.3))
+                                .background(selectedTheme == nil ? Color.orange : Color.gray.opacity(0.3))
                                 .foregroundColor(selectedTheme == nil ? .white : .primary)
                                 .cornerRadius(20)
                         }
@@ -53,7 +53,7 @@ struct GalleryView: View {
                                     .font(.caption)
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 6)
-                                    .background(.blue )
+                                    .background(.blue)
                                     .foregroundColor(.white)
                                     .cornerRadius(20)
                             }

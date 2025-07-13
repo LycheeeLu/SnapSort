@@ -30,7 +30,7 @@ struct ContentView: View {
         // a container (TabView with 3 tabs)
         TabView(selection: $selectedTab){
             //Home Tab
-            HomeView()
+            HomeView(selectedTab: $selectedTab)
                 .tabItem{
                     Image(systemName: "house.fill")
                     Text("Home")

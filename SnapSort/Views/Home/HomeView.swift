@@ -10,6 +10,8 @@ import SwiftData
 import Photos
 
 struct HomeView: View{
+    @Binding var selectedTab: Int
+    
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject var photoService: PhotoService
     @EnvironmentObject var textService: TextRecogService
@@ -80,12 +82,12 @@ struct HomeView: View{
                 .foregroundStyle(
                     LinearGradient(colors: [.blue, .cyan], startPoint: .topLeading, endPoint: .bottomTrailing)
                 )
-            Text("Sort your Screenshorts")
+            Text("sort your snaps album")
                 .font(.title2)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
             
-            Text("use AI to categorize important screenshot information")
+            Text("with themes you care 💗")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -224,6 +226,8 @@ struct HomeView: View{
                     
                 ){
                     // Switch to gallery tab
+                    print("Gallery card tapped")
+                    selectedTab = 1
                 }
                 
                 
@@ -233,6 +237,8 @@ struct HomeView: View{
                     color: .indigo
                 ){
                     // Switch to keywords tab
+                    print("Edit Topics Card tapped")
+                    selectedTab = 2
                 }
                 
                 QuickActionCard(
@@ -355,16 +361,6 @@ struct HomeView: View{
 }
 
 
-#Preview("Only HomeView") {
-    let mockService = MockPhotoService() as PhotoService
-    HomeView()
-        .environmentObject(mockService)
-        .environmentObject(TextRecogService())
-}
-
-class MockTextRecognitionService: TextRecogService {
-    // 
-}
 
 class MockPhotoService: PhotoService {
     override init() {
@@ -376,4 +372,35 @@ class MockPhotoService: PhotoService {
         print("🔵 Mock: Pretending permission is granted.")
         self.authorizationStatus = .authorized
     }
+}
+
+#Preview("HomeView") {
+    @Previewable @State var selectedTab = 0
+    
+    let mockService = MockPhotoService() as PhotoService
+    
+    return TabView(selection: $selectedTab) {
+        HomeView(selectedTab: $selectedTab)
+            .tabItem {
+                Image(systemName: "house.fill")
+                Text("Home")
+            }
+            .tag(0)
+        
+        Text("Gallery View")
+            .tabItem {
+                Image(systemName: "photo.on.rectangle.angled")
+                Text("Gallery")
+            }
+            .tag(1)
+        
+        Text("Keywords View")
+            .tabItem {
+                Image(systemName: "tag.fill")
+                Text("Keywords")
+            }
+            .tag(2)
+    }
+    .environmentObject(mockService)
+    .environmentObject(TextRecogService())
 }
