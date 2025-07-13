@@ -46,7 +46,7 @@ struct ContentView: View {
                 .tag(1)
             
             
-            KeywordsView()
+            ThemeListView()
                 .tabItem{
                     Image(systemName: "tag.fill")
                     Text("Keywords")

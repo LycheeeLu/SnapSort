@@ -1,5 +1,5 @@
 //
-//  AddTheme.swift
+//  ThemeRow.swift
 //  SnapSort
 //
 //  Created by Jie Lu on 24.6.2025.
@@ -220,7 +220,6 @@ struct EditThemeView: View {
         TextEditor(text: $keywordsText)
             .frame(minHeight: 100)
             .scrollContentBackground(.hidden)
-            .background(Color(.systemBackground))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Color(.systemGray4), lineWidth: 1)
