@@ -113,7 +113,7 @@ struct ThemeRow: View{
         .background(Color(.systemBackground))
         .cornerRadius(12)
         .shadow(color: Color.black.opacity(0.05), radius: 2, x: 0, y: 1)
-        .sheet(isPresented: $isEditing, content: {EditThemeView(theme: theme)})
+        .sheet(isPresented: $isEditing, content: {ThemeSheetView(existingTheme: theme)})
         .confirmationDialog(
             "Delete ' \(theme.name)'?",
             isPresented: $showingDeleteConfirmation,
@@ -150,148 +150,7 @@ struct KeywordChip: View{
     }
 }
 
-// MARK: - Edit Theme View
-struct EditThemeView: View {
-    @Bindable var theme: Theme
-    @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var modelContext
-    
-    @State private var themeName: String = ""
-    @State private var keywordsText: String = ""
-    @State private var selectedColor: ThemeColor = .pink
-    
-    private let availableColors: [ThemeColor] = [.blue, .green, .orange, .pink]
 
-    var body: some View {
-        NavigationView {
-            Form {
-                themeDetailsSection
-                keywordsSection
-                colorSection
-            }
-            .navigationTitle("Edit this Theme")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    cancelButton
-                }
-                
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    saveButton
-                }
-            }
-            .onAppear {
-                setupInitialValues()
-            }
-        }
-    }
-    
-    // MARK: - View Components
-    
-    private var themeDetailsSection: some View {
-        Section("Theme Details") {
-            themeNameTextEditor
-          //  TextField("Theme Name", text: $themeName)
-              //  .textFieldStyle(RoundedBorderTextFieldStyle())
-        }
-    }
-    
-    private var themeNameTextEditor: some View{
-        TextEditor(text: $themeName)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color(.systemGray4), lineWidth: 1)
-            )
-    }
-    
-    private var keywordsSection: some View {
-        Section("Keywords") {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Enter keywords separated by space")
-                    .font(.caption)
-                    .foregroundColor(.white)
-                
-                keywordsTextEditor
-            }
-        }
-    }
-    
-    private var keywordsTextEditor: some View {
-        TextEditor(text: $keywordsText)
-            .frame(minHeight: 100)
-            .scrollContentBackground(.hidden)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Color(.systemGray4), lineWidth: 1)
-            )
-    }
-    
-    private var colorSection: some View {
-        Section("Color") {
-            LazyVGrid(columns: gridColumns, spacing: 12) {
-                ForEach(availableColors, id: \.self) { colorName in
-                    colorButton(for: colorName)
-                }
-            }
-            .padding(.vertical, 8)
-        }
-    }
-    
-    private var gridColumns: [GridItem] {
-        Array(repeating: GridItem(.flexible()), count: 4)
-    }
-    
-    private func colorButton(for colorName: ThemeColor) -> some View {
-        Button(action: {
-            selectedColor = colorName
-        }) {
-            Circle()
-                .fill(colorName.swiftUIColor)
-                .frame(width: 40, height: 40)
-                .overlay(
-                    Circle()
-                        .stroke(selectedColor == colorName ? Color.purple : Color.clear, lineWidth: 3)
-                )
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-    
-    private var cancelButton: some View {
-        Button("Cancel") {
-            dismiss()
-        }
-    }
-    
-    private var saveButton: some View {
-        Button("Save") {
-            saveTheme()
-        }
-        .disabled(themeName.trimmingCharacters(in: .whitespaces).isEmpty)
-    }
-    
-    // MARK: - Methods
-    
-    private func setupInitialValues() {
-        themeName = theme.name
-        keywordsText = theme.keywords.joined(separator: " ")
-        selectedColor = theme.color
-    }
-    
-    private func saveTheme() {
-            let trimmedName = themeName.trimmingCharacters(in: .whitespaces)
-            let keywords = keywordsText
-                .components(separatedBy: " ")
-                .map { $0.trimmingCharacters(in: .whitespaces) }
-                .filter { !$0.isEmpty }
-            
-            theme.name = trimmedName
-            theme.keywords = keywords
-            theme.color = selectedColor
-            
-            try? modelContext.save()
-            dismiss()
-        }
-}
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
