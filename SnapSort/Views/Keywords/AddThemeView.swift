@@ -190,9 +190,18 @@ struct EditThemeView: View {
     
     private var themeDetailsSection: some View {
         Section("Theme Details") {
-            TextField("Theme Name", text: $themeName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+            themeNameTextEditor
+          //  TextField("Theme Name", text: $themeName)
+              //  .textFieldStyle(RoundedBorderTextFieldStyle())
         }
+    }
+    
+    private var themeNameTextEditor: some View{
+        TextEditor(text: $themeName)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color(.systemGray4), lineWidth: 1)
+            )
     }
     
     private var keywordsSection: some View {
@@ -211,6 +220,7 @@ struct EditThemeView: View {
         TextEditor(text: $keywordsText)
             .frame(minHeight: 100)
             .scrollContentBackground(.hidden)
+            .background(Color(.systemBackground))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(Color(.systemGray4), lineWidth: 1)
@@ -241,7 +251,7 @@ struct EditThemeView: View {
                 .frame(width: 40, height: 40)
                 .overlay(
                     Circle()
-                        .stroke(selectedColor == colorName ? Color.primary : Color.clear, lineWidth: 3)
+                        .stroke(selectedColor == colorName ? Color.purple : Color.clear, lineWidth: 3)
                 )
         }
         .buttonStyle(PlainButtonStyle())
