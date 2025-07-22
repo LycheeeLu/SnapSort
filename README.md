@@ -64,15 +64,21 @@ open SnapSort.xcodeproj
   <img src="images/access-allow-1.png" alt="Step 1" width="150"/>
   <img src="images/access-allow-2.png" alt="Step 2" width="150"/>
   <img src="images/access-allow-3.png" alt="Step 3" width="150"/>
-  <img src="images/allow-access-4.png" alt="Step 4" width="150"/>
+  <img src="images/access-allow-4.png" alt="Step 4" width="150"/>
 </div>
 
 ### _3. View full or theme-based sorted snaps gallery_
-![Gallery 1](images/gallery-1.png)
-![Gallery 2](images/gallery-2.png)
-![Gallery 3](images/gallery-3.png)
+<div align="center">
+  <img src="images/gallery-1.png" alt="Gallery 1" width="160"/>
+  <img src="images/gallery-2.png" alt="Gallery 2" width="160"/>
+  <img src="images/gallery-3.png" alt="Gallery 3" width="160"/>
+</div>
+
 ### _4. Edit existing Themes with more topic keywords_
 ### _5. Or add more Themes of intersts_
-![Theme Edit 1](images/theme-edit-1.png)
-![Theme Edit 2](images/theme-edit-2.png)
-![Theme Edit 3](images/theme-edit-3.png)
+<div align="center">
+  <img src="images/theme-edit-1.png" alt="Theme Edit 1" width="160"/>
+  <img src="images/theme-edit-2.png" alt="Theme Edit 2" width="160"/>
+  <img src="images/theme-edit-3.png" alt="Theme Edit 3" width="160"/>
+</div>
+
