@@ -60,10 +60,13 @@ open SnapSort.xcodeproj
 
 ### _1. Give permission to access photo library_
 ### _2. Click categorization button_
-![Step 1](images/access-allow-1.png)
-![Step 2](images/access-allow-2.png)
-![Step 3](images/access-allow-3.png)
-![Step 4](images/access-allow-4.png)
+<div align="center">
+  <img src="images/access-allow-1.png" alt="Step 1" width="150"/>
+  <img src="images/access-allow-2.png" alt="Step 2" width="150"/>
+  <img src="images/access-allow-3.png" alt="Step 3" width="150"/>
+  <img src="images/allow-access-4.png" alt="Step 4" width="150"/>
+</div>
+
 ### _3. View full or theme-based sorted snaps gallery_
 ![Gallery 1](images/gallery-1.png)
 ![Gallery 2](images/gallery-2.png)
