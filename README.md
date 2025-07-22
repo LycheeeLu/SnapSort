@@ -84,3 +84,6 @@ open SnapSort.xcodeproj
   <img src="images/theme-edit-3.png" alt="Theme Edit 3" width="160"/>
 </div>
 
+### 📄 License
+MIT License. Free to use, modify, and share.
+
