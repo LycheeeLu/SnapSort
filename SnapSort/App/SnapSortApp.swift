@@ -23,7 +23,7 @@ struct SnapSortApp: App {
             fatalError("Could not create ModelContainer: \(error)")
         }
     }() */
-    //seems like sharedModelContainer is useless for now
+    
     
     var body: some Scene {
         WindowGroup {
