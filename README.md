@@ -1,7 +1,8 @@
 
 # Snapsort
 
-Snapsort is an ios App that access your screenshots in your album (under user consent) and automatically sort them based on themes from the extracted text.
+Snapsort is an ios App that accesses your screenshots in your album (under user consent) and automatically sort them based on themes from the extracted text.
+Say if you have a lot of screenshots from posts/Tiktok/instagram/random webpages that you saved, believing they hold important/interesting informaiton on travel plans, shopping discounts, recipe advice, but you are too lazy to sort them into a file, and these screenshots just grow to eat up your phone memory...... No worries, SnapSort is here to help!
 
 ## 📦 Installation
 
